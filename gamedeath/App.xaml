@@ -1,0 +1,12 @@
+﻿<Application x:Class="gamedeath.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:gamedeath"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+        <Color x:Key="DEATHblue">#00a2e7</Color>
+        <Color x:Key="yell">#ef7f1b</Color>
+
+    </Application.Resources>
+</Application>

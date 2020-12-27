@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище dpmkStopGoModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="log">
+          <Key>
+            <PropertyRef Name="idPers" />
+          </Key>
+          <Property Name="idPers" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="pass" Type="int" Nullable="false" />
+          <Property Name="idRole" Type="int" Nullable="false" />
+          <Property Name="email" Type="nchar" MaxLength="500" />
+          <Property Name="checkCode" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="MC">
+          <Key>
+            <PropertyRef Name="idPers" />
+          </Key>
+          <Property Name="idPers" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="xp" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="quest">
+          <Key>
+            <PropertyRef Name="idQ" />
+          </Key>
+          <Property Name="idQ" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="text" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="answ" Type="nvarchar(max)" />
+          <Property Name="reward" Type="int" Nullable="false" />
+          <Property Name="time" Type="int" />
+        </EntityType>
+        <EntityType Name="review">
+          <Key>
+            <PropertyRef Name="idRew" />
+          </Key>
+          <Property Name="idRew" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="320" Nullable="false" />
+          <Property Name="text" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="idRole" />
+          </Key>
+          <Property Name="idRole" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="roleType" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="timet">
+          <Key>
+            <PropertyRef Name="idTT" />
+          </Key>
+          <Property Name="idTT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idPers" Type="int" />
+          <Property Name="idQ" Type="int" />
+          <Property Name="process" Type="int" />
+        </EntityType>
+        <Association Name="FK_log_roles">
+          <End Role="roles" Type="Self.roles" Multiplicity="1" />
+          <End Role="log" Type="Self.log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="idRole" />
+            </Principal>
+            <Dependent Role="log">
+              <PropertyRef Name="idRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MC_log">
+          <End Role="log" Type="Self.log" Multiplicity="1" />
+          <End Role="MC" Type="Self.MC" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="log">
+              <PropertyRef Name="idPers" />
+            </Principal>
+            <Dependent Role="MC">
+              <PropertyRef Name="idPers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_timet_MC">
+          <End Role="MC" Type="Self.MC" Multiplicity="0..1" />
+          <End Role="timet" Type="Self.timet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MC">
+              <PropertyRef Name="idPers" />
+            </Principal>
+            <Dependent Role="timet">
+              <PropertyRef Name="idPers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_timet_quest">
+          <End Role="quest" Type="Self.quest" Multiplicity="0..1" />
+          <End Role="timet" Type="Self.timet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="quest">
+              <PropertyRef Name="idQ" />
+            </Principal>
+            <Dependent Role="timet">
+              <PropertyRef Name="idQ" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище dpmkStopGoModelContainer">
+          <EntitySet Name="log" EntityType="Self.log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MC" EntityType="Self.MC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="quest" EntityType="Self.quest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="review" EntityType="Self.review" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="roles" EntityType="Self.roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="timet" EntityType="Self.timet" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_log_roles" Association="Self.FK_log_roles">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="log" EntitySet="log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MC_log" Association="Self.FK_MC_log">
+            <End Role="log" EntitySet="log" />
+            <End Role="MC" EntitySet="MC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_timet_MC" Association="Self.FK_timet_MC">
+            <End Role="MC" EntitySet="MC" />
+            <End Role="timet" EntitySet="timet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_timet_quest" Association="Self.FK_timet_quest">
+            <End Role="quest" EntitySet="quest" />
+            <End Role="timet" EntitySet="timet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dpmkStopGoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="log">
+          <Key>
+            <PropertyRef Name="idPers" />
+          </Key>
+          <Property Name="idPers" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="pass" Type="Int32" Nullable="false" />
+          <Property Name="idRole" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <Property Name="checkCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="roles" Relationship="Self.FK_log_roles" FromRole="log" ToRole="roles" />
+          <NavigationProperty Name="MC" Relationship="Self.FK_MC_log" FromRole="log" ToRole="MC" />
+        </EntityType>
+        <EntityType Name="MC">
+          <Key>
+            <PropertyRef Name="idPers" />
+          </Key>
+          <Property Name="idPers" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="xp" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="log" Relationship="Self.FK_MC_log" FromRole="MC" ToRole="log" />
+          <NavigationProperty Name="timet" Relationship="Self.FK_timet_MC" FromRole="MC" ToRole="timet" />
+        </EntityType>
+        <EntityType Name="quest">
+          <Key>
+            <PropertyRef Name="idQ" />
+          </Key>
+          <Property Name="idQ" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="text" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="answ" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reward" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="Int32" />
+          <NavigationProperty Name="timet" Relationship="Self.FK_timet_quest" FromRole="quest" ToRole="timet" />
+        </EntityType>
+        <EntityType Name="review">
+          <Key>
+            <PropertyRef Name="idRew" />
+          </Key>
+          <Property Name="idRew" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="320" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="idRole" />
+          </Key>
+          <Property Name="idRole" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roleType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="log" Relationship="Self.FK_log_roles" FromRole="roles" ToRole="log" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="timet">
+          <Key>
+            <PropertyRef Name="idTT" />
+          </Key>
+          <Property Name="idTT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idPers" Type="Int32" />
+          <Property Name="idQ" Type="Int32" />
+          <Property Name="process" Type="Int32" />
+          <NavigationProperty Name="MC" Relationship="Self.FK_timet_MC" FromRole="timet" ToRole="MC" />
+          <NavigationProperty Name="quest" Relationship="Self.FK_timet_quest" FromRole="timet" ToRole="quest" />
+        </EntityType>
+        <Association Name="FK_log_roles">
+          <End Role="roles" Type="Self.roles" Multiplicity="1" />
+          <End Role="log" Type="Self.log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="idRole" />
+            </Principal>
+            <Dependent Role="log">
+              <PropertyRef Name="idRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MC_log">
+          <End Role="log" Type="Self.log" Multiplicity="1" />
+          <End Role="MC" Type="Self.MC" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="log">
+              <PropertyRef Name="idPers" />
+            </Principal>
+            <Dependent Role="MC">
+              <PropertyRef Name="idPers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_timet_MC">
+          <End Role="MC" Type="Self.MC" Multiplicity="0..1" />
+          <End Role="timet" Type="Self.timet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MC">
+              <PropertyRef Name="idPers" />
+            </Principal>
+            <Dependent Role="timet">
+              <PropertyRef Name="idPers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_timet_quest">
+          <End Role="quest" Type="Self.quest" Multiplicity="0..1" />
+          <End Role="timet" Type="Self.timet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="quest">
+              <PropertyRef Name="idQ" />
+            </Principal>
+            <Dependent Role="timet">
+              <PropertyRef Name="idQ" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dpmkStopGoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="log" EntityType="Self.log" />
+          <EntitySet Name="MC" EntityType="Self.MC" />
+          <EntitySet Name="quest" EntityType="Self.quest" />
+          <EntitySet Name="review" EntityType="Self.review" />
+          <EntitySet Name="roles" EntityType="Self.roles" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="timet" EntityType="Self.timet" />
+          <AssociationSet Name="FK_log_roles" Association="Self.FK_log_roles">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="log" EntitySet="log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MC_log" Association="Self.FK_MC_log">
+            <End Role="log" EntitySet="log" />
+            <End Role="MC" EntitySet="MC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_timet_MC" Association="Self.FK_timet_MC">
+            <End Role="MC" EntitySet="MC" />
+            <End Role="timet" EntitySet="timet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_timet_quest" Association="Self.FK_timet_quest">
+            <End Role="quest" EntitySet="quest" />
+            <End Role="timet" EntitySet="timet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище dpmkStopGoModelContainer" CdmEntityContainer="dpmkStopGoEntities">
+          <EntitySetMapping Name="log">
+            <EntityTypeMapping TypeName="dpmkStopGoModel.log">
+              <MappingFragment StoreEntitySet="log">
+                <ScalarProperty Name="idPers" ColumnName="idPers" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="pass" ColumnName="pass" />
+                <ScalarProperty Name="idRole" ColumnName="idRole" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="checkCode" ColumnName="checkCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MC">
+            <EntityTypeMapping TypeName="dpmkStopGoModel.MC">
+              <MappingFragment StoreEntitySet="MC">
+                <ScalarProperty Name="idPers" ColumnName="idPers" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="xp" ColumnName="xp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="quest">
+            <EntityTypeMapping TypeName="dpmkStopGoModel.quest">
+              <MappingFragment StoreEntitySet="quest">
+                <ScalarProperty Name="idQ" ColumnName="idQ" />
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="answ" ColumnName="answ" />
+                <ScalarProperty Name="reward" ColumnName="reward" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="review">
+            <EntityTypeMapping TypeName="dpmkStopGoModel.review">
+              <MappingFragment StoreEntitySet="review">
+                <ScalarProperty Name="idRew" ColumnName="idRew" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="text" ColumnName="text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="dpmkStopGoModel.roles">
+              <MappingFragment StoreEntitySet="roles">
+                <ScalarProperty Name="idRole" ColumnName="idRole" />
+                <ScalarProperty Name="roleType" ColumnName="roleType" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="dpmkStopGoModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="timet">
+            <EntityTypeMapping TypeName="dpmkStopGoModel.timet">
+              <MappingFragment StoreEntitySet="timet">
+                <ScalarProperty Name="idTT" ColumnName="idTT" />
+                <ScalarProperty Name="idPers" ColumnName="idPers" />
+                <ScalarProperty Name="idQ" ColumnName="idQ" />
+                <ScalarProperty Name="process" ColumnName="process" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
